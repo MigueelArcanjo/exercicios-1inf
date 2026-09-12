@@ -1,59 +1,59 @@
 const {
     cliente,
-    produto,
+    medicamento,
     preco,
     quantidade,
     estoque,
     valorPago,
     subtotal,
     estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    descontoStatus,
+    valorDesconto,
     valorFinal,
     pagamentoStatus,
     troco,
-    statusCompra,
+    statusVenda,
     resumo
 } = require("../index")
 
 
-test("Deve armazenar corretamente os dados da compra", () => {
+test("Deve armazenar corretamente os dados", () => {
 
-    expect(cliente).toBe("Camila Ribeiro")
-    expect(produto).toBe("Teclado Mecânico")
-    expect(preco).toBe(250)
-    expect(quantidade).toBe(6)
-    expect(estoque).toBe(3)
-    expect(valorPago).toBe(2000)
-
-})
-
-
-test("Deve calcular o subtotal corretamente", () => {
-
-    expect(subtotal).toBe(1500)
+    expect(cliente).toBe("Bianca Ferreira")
+    expect(medicamento).toBe("Analgésico Dorfin")
+    expect(preco).toBe(15)
+    expect(quantidade).toBe(10)
+    expect(estoque).toBe(20)
+    expect(valorPago).toBe(150)
 
 })
 
 
-test("Deve verificar corretamente a disponibilidade em estoque", () => {
+test("Deve calcular subtotal corretamente", () => {
 
-    expect(estoqueDisponivel).toBe("Estoque insuficiente")
-
-})
-
-
-test("Deve calcular corretamente a situação do frete", () => {
-
-    expect(freteStatus).toBe("Frete grátis")
-    expect(valorFrete).toBe(0)
+    expect(subtotal).toBe(150)
 
 })
 
 
-test("Deve calcular o valor final corretamente", () => {
+test("Deve verificar corretamente estoque disponível", () => {
 
-    expect(valorFinal).toBe(1500)
+    expect(estoqueDisponivel).toBe("Estoque suficiente")
+
+})
+
+
+test("Deve aplicar corretamente a regra comercial (RF04)", () => {
+
+    expect(descontoStatus).toBe("Desconto aplicado")
+    expect(valorDesconto).toBe(20)
+
+})
+
+
+test("Deve calcular valor final corretamente", () => {
+
+    expect(valorFinal).toBe(130)
 
 })
 
@@ -65,29 +65,28 @@ test("Deve verificar corretamente a situação do pagamento", () => {
 })
 
 
-test("Deve calcular o troco corretamente", () => {
+test("Deve calcular troco corretamente", () => {
 
-    expect(troco).toBe(500)
-
-})
-
-
-test("Deve verificar corretamente a situação final da compra", () => {
-
-    expect(statusCompra).toBe("Compra não pode ser confirmada")
+    expect(troco).toBe(20)
 
 })
 
 
-test("Deve gerar um resumo contendo as informações da compra", () => {
+test("Deve verificar corretamente a situação final", () => {
 
-    expect(resumo).toContain("Camila Ribeiro")
-    expect(resumo).toContain("Teclado Mecânico")
-    expect(resumo).toContain("250")
-    expect(resumo).toContain("1500")
-    expect(resumo).toContain("Frete grátis")
+    expect(statusVenda).toBe("Venda confirmada")
+
+})
+
+
+test("Deve gerar um resumo contendo as informações principais", () => {
+
+    expect(resumo).toContain("Bianca Ferreira")
+    expect(resumo).toContain("Analgésico Dorfin")
+    expect(resumo).toContain("150")
+    expect(resumo).toContain("Desconto aplicado")
     expect(resumo).toContain("Pagamento aprovado")
-    expect(resumo).toContain("500")
-    expect(resumo).toContain("Compra não pode ser confirmada")
+    expect(resumo).toContain("20")
+    expect(resumo).toContain("Venda confirmada")
 
 })

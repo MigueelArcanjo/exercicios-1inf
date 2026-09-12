@@ -1,59 +1,59 @@
 const {
-    cliente,
-    produto,
+    motorista,
+    combustivel,
     preco,
     quantidade,
-    estoque,
+    capacidadeTanque,
     valorPago,
     subtotal,
-    estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    tanqueStatus,
+    descontoStatus,
+    valorDesconto,
     valorFinal,
     pagamentoStatus,
     troco,
-    statusCompra,
+    statusAbastecimento,
     resumo
 } = require("../index")
 
 
-test("Deve armazenar corretamente os dados da compra", () => {
+test("Deve armazenar corretamente os dados", () => {
 
-    expect(cliente).toBe("Vanessa Moreira")
-    expect(produto).toBe("Webcam Full HD")
-    expect(preco).toBe(220)
-    expect(quantidade).toBe(2)
-    expect(estoque).toBe(10)
-    expect(valorPago).toBe(840)
-
-})
-
-
-test("Deve calcular o subtotal corretamente", () => {
-
-    expect(subtotal).toBe(440)
+    expect(motorista).toBe("Sérgio Batista")
+    expect(combustivel).toBe("Gasolina Aditivada")
+    expect(preco).toBe(6)
+    expect(quantidade).toBe(30)
+    expect(capacidadeTanque).toBe(50)
+    expect(valorPago).toBe(200)
 
 })
 
 
-test("Deve verificar corretamente a disponibilidade em estoque", () => {
+test("Deve calcular subtotal corretamente", () => {
 
-    expect(estoqueDisponivel).toBe("Estoque suficiente")
-
-})
-
-
-test("Deve calcular corretamente a situação do frete", () => {
-
-    expect(freteStatus).toBe("Frete: R$ 30")
-    expect(valorFrete).toBe(30)
+    expect(subtotal).toBe(180)
 
 })
 
 
-test("Deve calcular o valor final corretamente", () => {
+test("Deve verificar corretamente capacidade do tanque", () => {
 
-    expect(valorFinal).toBe(470)
+    expect(tanqueStatus).toBe("Cabe no tanque")
+
+})
+
+
+test("Deve aplicar corretamente a regra comercial (RF04)", () => {
+
+    expect(descontoStatus).toBe("Desconto aplicado")
+    expect(valorDesconto).toBe(15)
+
+})
+
+
+test("Deve calcular valor final corretamente", () => {
+
+    expect(valorFinal).toBe(165)
 
 })
 
@@ -65,29 +65,28 @@ test("Deve verificar corretamente a situação do pagamento", () => {
 })
 
 
-test("Deve calcular o troco corretamente", () => {
+test("Deve calcular troco corretamente", () => {
 
-    expect(troco).toBe(370)
-
-})
-
-
-test("Deve verificar corretamente a situação final da compra", () => {
-
-    expect(statusCompra).toBe("Compra confirmada")
+    expect(troco).toBe(35)
 
 })
 
 
-test("Deve gerar um resumo contendo as informações da compra", () => {
+test("Deve verificar corretamente a situação final", () => {
 
-    expect(resumo).toContain("Vanessa Moreira")
-    expect(resumo).toContain("Webcam Full HD")
-    expect(resumo).toContain("220")
-    expect(resumo).toContain("440")
-    expect(resumo).toContain("Frete: R$ 30")
+    expect(statusAbastecimento).toBe("Abastecimento confirmado")
+
+})
+
+
+test("Deve gerar um resumo contendo as informações principais", () => {
+
+    expect(resumo).toContain("Sérgio Batista")
+    expect(resumo).toContain("Gasolina Aditivada")
+    expect(resumo).toContain("180")
+    expect(resumo).toContain("Desconto aplicado")
     expect(resumo).toContain("Pagamento aprovado")
-    expect(resumo).toContain("370")
-    expect(resumo).toContain("Compra confirmada")
+    expect(resumo).toContain("35")
+    expect(resumo).toContain("Abastecimento confirmado")
 
 })

@@ -1,212 +1,158 @@
-# 🚀 PROJETO 2 (v2) — SISTEMA DE VERIFICAÇÃO DE COMPRA ONLINE
+# 🚀 PROJETO 2 (v2) — SISTEMA DE MATRÍCULA EM ESCOLA DE IDIOMAS
 
 # 🎯 PROBLEMA
 
-Você continua fazendo parte da equipe de desenvolvimento que presta serviços para lojas de informática.
+Você desenvolve sistemas para a Escola de Idiomas Global Talk.
 
-Na Sprint anterior, o time entregou um sistema que calculava o valor de um pedido. Agora, o setor **Comercial** pediu uma evolução: antes de confirmar uma compra, o sistema precisa **decidir** algumas coisas automaticamente, em vez de apenas calcular valores.
-
-Durante a reunião de **Sprint Planning**, o responsável pelo setor Comercial explicou:
-
-> "Precisamos que o sistema verifique se há estoque, decida se a compra tem direito a frete grátis, confira se o cliente pagou o suficiente e só então informe se a compra pode ser confirmada."
->
-
-O líder técnico transformou o pedido nos requisitos abaixo.
+A escola quer verificar se o aluno atingiu a nota mínima no teste de nivelamento, aplicar bolsa para quem tem irmão já matriculado e conferir o pagamento da matrícula.
 
 # 📋 PROJETO
 
-## RF01 — Registro da compra
+## RF01 — Registro da matrícula
 
-O sistema deve representar uma compra contendo:
+O sistema deve representar uma matrícula contendo:
 
-- nome do cliente;
-- nome do produto;
-- preço do produto;
-- quantidade solicitada;
-- quantidade disponível em estoque;
-- valor pago pelo cliente.
+- nome do aluno;
+- idioma;
+- valor da mensalidade;
+- taxa de material didático;
+- nota mínima de 5 no teste de nivelamento;
+- possui irmão já matriculado (1 para sim, 0 para não);
+- valor pago.
 
 Para os testes, será utilizado inicialmente:
 
 ```
-Cliente: Fernanda Rocha
-Produto: Kit Teclado e Mouse
-Preço: R$ 200
-Quantidade: 6
-Estoque: 3
-Valor pago: R$ 1700
+Aluno: Caio Ferreira
+Idioma: Inglês
+Mensalidade: R$ 350
+Material didático: R$ 60
+Nota do teste: 8
+Irmão matriculado (sim=1): 1
+Valor pago: R$ 350
 ```
 
-## RF02 — Cálculo do subtotal
-
-O sistema deve calcular o valor total dos produtos considerando o preço unitário e a quantidade solicitada.
+## RF02 — Cálculo do valor base
 
 ```
-subtotal = preço × quantidade
+valor base = valor da mensalidade + taxa de material didático
 ```
 
 Para o cenário principal:
 
 ```
-200 × 6 = 1200
-
-Subtotal esperado: R$ 1200
+350 + 60 = 410
 ```
 
-## RF03 — Verificação do estoque
+## RF03 — Verificação da nota mínima de 5 no teste de nivelamento
 
-O sistema deve verificar, **usando `if`/`else`**, se a quantidade solicitada está disponível no estoque.
+O sistema deve verificar, **usando `if`/`else` e comparadores**, se a nota do teste de nivelamento é maior ou igual a 5.
 
-Quando a quantidade solicitada for menor ou igual ao estoque disponível, o resultado deverá ser:
+Quando a condição for atendida, o resultado deverá ser:
 
 ```
-Estoque suficiente
+Aprovado no nivelamento
 ```
 
 Caso contrário:
 
 ```
-Estoque insuficiente
+Reprovado no nivelamento
 ```
 
 Para o cenário principal:
 
 ```
-Quantidade: 6
-Estoque: 3
+Nota do teste: 8
 
-Resultado esperado: Estoque insuficiente
+Resultado esperado: Aprovado no nivelamento
 ```
 
-## RF04 — Frete grátis
+## RF04 — Bolsa por irmão matriculado
 
-A empresa possui uma regra comercial:
-
-> Pedidos com subtotal maior ou igual a R$ 1.000 têm direito a frete grátis. Pedidos abaixo desse valor pagam R$ 30 de frete.
->
-
-Utilizando um comparador (`>=`), o sistema deve calcular o valor do frete e informar a situação do frete:
-
-```
-Frete grátis
-```
-
-ou:
-
-```
-Frete: R$ 30
-```
+Alunos com irmão já matriculado (valor igual a 1) recebem R$ 60 de bolsa de desconto na mensalidade. Caso contrário, não há bolsa.
 
 Para o cenário principal:
 
 ```
-Subtotal: R$ 1200
+Irmão matriculado (sim=1): 1
 
-Situação esperada: Frete grátis
-Valor do frete esperado: R$ 0
+Situação esperada: Bolsa aplicada
+Valor do desconto esperado: R$ 60
 ```
 
 ## RF05 — Cálculo do valor final
 
-O sistema deve somar o frete ao subtotal:
-
 ```
-valor final = subtotal + valor do frete
+valor final = valor base - valor do desconto
 ```
 
 Para o cenário principal:
 
 ```
-1200 + 0 = 1200
+410 - 60 = 350
 ```
 
 ## RF06 — Verificação do pagamento
 
-O sistema deve verificar, usando comparadores, se o valor pago pelo cliente é suficiente para quitar a compra.
-
-Quando o valor pago for maior ou igual ao valor final, o resultado deverá ser:
+Quando o valor pago for maior ou igual ao valor final:
 
 ```
-Pagamento aprovado
+Matrícula quitada
 ```
 
 Caso contrário:
 
 ```
-Pagamento insuficiente
+Matrícula com saldo pendente
 ```
 
 Para o cenário principal:
 
 ```
-Valor final: R$ 1200
-Valor pago: R$ 1700
+Valor final: R$ 350
+Valor pago: R$ 350
 
-Resultado esperado: Pagamento aprovado
+Resultado esperado: Matrícula quitada
 ```
 
 ## RF07 — Cálculo do troco
 
-Quando o pagamento for aprovado, o sistema deve calcular o troco:
+Quando o pagamento for aprovado:
 
 ```
 troco = valor pago - valor final
 ```
 
+Quando o pagamento for insuficiente, o troco deve ser `R$ 0`.
+
 Para o cenário principal:
 
 ```
-Troco esperado: R$ 500
+Troco esperado: R$ 0
 ```
 
-Quando o pagamento for insuficiente, o troco deve ser:
+## RF08 — Situação da matrícula
+
+Usando `if`/`else` (pode ser um dentro do outro):
+
+- Se nota mínima de 5 no teste de nivelamento for atendida **e** o pagamento estiver aprovado: `"Matrícula confirmada"`
+- Se nota mínima de 5 no teste de nivelamento for atendida, mas o pagamento **não** estiver aprovado: `"Matrícula confirmada com saldo pendente"`
+- Se nota mínima de 5 no teste de nivelamento **não** for atendida: `"Matrícula não pode ser confirmada: reprovado no nivelamento"`
+
+Para o cenário principal:
 
 ```
-R$ 0
+Matrícula confirmada
 ```
 
-## RF08 — Situação da compra
+## RF09 — Resumo
 
-O sistema deve decidir se a compra pode ser confirmada.
+Gerar, utilizando **template string**, um texto com as principais informações.
 
-Quando houver **estoque suficiente e** o pagamento estiver **aprovado**, o resultado deverá ser:
+# 🧪 OUTRO CENÁRIO PARA VOCÊ TESTAR (não faz parte dos testes automáticos)
 
-```
-Compra confirmada
-```
-
-Em qualquer outro caso, o resultado deverá ser:
-
-```
-Compra não pode ser confirmada
-```
-
-Para o cenário principal, o resultado esperado é:
-
-```
-Compra não pode ser confirmada
-```
-
-## RF09 — Resumo da compra
-
-O sistema deve gerar, utilizando **template string**, uma apresentação textual contendo as principais informações da compra:
-
-- cliente;
-- produto;
-- preço;
-- quantidade;
-- subtotal;
-- situação do frete e valor do frete;
-- valor final;
-- situação do pagamento;
-- troco;
-- situação da compra.
-
-O formato visual da apresentação fica a critério do desenvolvedor.
-
-# 🧪 OUTROS CENÁRIOS PARA VOCÊ TESTAR (não fazem parte dos testes automáticos)
-
-Depois de terminar o cenário principal, tente rodar seu programa mentalmente (ou trocando os valores) para conferir se ele se comporta corretamente em outras situações: quando o subtotal fica abaixo de R$ 1.000 (sem frete grátis), quando a quantidade pedida é maior que o estoque, e quando o valor pago é menor que o valor final.
+Pense no que aconteceria se a nota do teste ficasse abaixo de 5..
 
 Crie o arquivo `index.js` que deverá conter a solução desenvolvida por você, utilizando os dados do cenário principal (RF01).
 
@@ -214,20 +160,21 @@ No final, cole isso abaixo para que os testes funcionem:
 
 ```jsx
 module.exports = {
-    cliente,
-    produto,
-    preco,
-    quantidade,
-    estoque,
+    aluno,
+    idioma,
+    valorMensalidade,
+    taxaMatricula,
+    notaTeste,
+    possuiIrmaoMatriculado,
     valorPago,
-    subtotal,
-    estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    valorBase,
+    nivelamentoStatus,
+    bolsaStatus,
+    valorBolsa,
     valorFinal,
     pagamentoStatus,
     troco,
-    statusCompra,
+    statusMatricula,
     resumo
 }
 ```

@@ -1,130 +1,107 @@
-# 🚀 PROJETO 2 (v2) — SISTEMA DE VERIFICAÇÃO DE COMPRA ONLINE
+# 🚀 PROJETO 2 (v2) — SISTEMA DE CONTROLE DE LOCAÇÃO DE JOGOS E FILMES
 
 # 🎯 PROBLEMA
 
-Você continua fazendo parte da equipe de desenvolvimento que presta serviços para lojas de informática.
+Você desenvolve sistemas para a Locadora RetroPlay, especializada em jogos e filmes.
 
-Na Sprint anterior, o time entregou um sistema que calculava o valor de um pedido. Agora, o setor **Comercial** pediu uma evolução: antes de confirmar uma compra, o sistema precisa **decidir** algumas coisas automaticamente, em vez de apenas calcular valores.
-
-Durante a reunião de **Sprint Planning**, o responsável pelo setor Comercial explicou:
-
-> "Precisamos que o sistema verifique se há estoque, decida se a compra tem direito a frete grátis, confira se o cliente pagou o suficiente e só então informe se a compra pode ser confirmada."
->
-
-O líder técnico transformou o pedido nos requisitos abaixo.
+A locadora quer verificar se o item foi devolvido dentro do prazo, calcular a multa por atraso e conferir se o pagamento foi suficiente.
 
 # 📋 PROJETO
 
-## RF01 — Registro da compra
+## RF01 — Registro da locação
 
-O sistema deve representar uma compra contendo:
+O sistema deve representar uma locação contendo:
 
 - nome do cliente;
-- nome do produto;
-- preço do produto;
-- quantidade solicitada;
-- quantidade disponível em estoque;
-- valor pago pelo cliente.
+- item locado;
+- taxa de serviço da locação;
+- prazo de devolução em dias;
+- dias que o cliente ficou com o item;
+- valor da multa por dia de atraso;
+- valor pago.
 
 Para os testes, será utilizado inicialmente:
 
 ```
-Cliente: Igor Marinho
-Produto: Switch de Rede
-Preço: R$ 190
-Quantidade: 1
-Estoque: 16
-Valor pago: R$ 290
+Cliente: Marina Teixeira
+Item: Jogo de Videogame Aventura Final
+Taxa de serviço: R$ 0
+Prazo (dias): 14
+Dias com o item: 20
+Multa por dia: R$ 3
+Valor pago: R$ 15
 ```
 
-## RF02 — Cálculo do subtotal
+## RF02 — Verificação do prazo de devolução
 
-O sistema deve calcular o valor total dos produtos considerando o preço unitário e a quantidade solicitada.
+O sistema deve verificar, **usando `if`/`else`**, se dias que o cliente ficou com o item está dentro do prazo de devolução.
 
-```
-subtotal = preço × quantidade
-```
-
-Para o cenário principal:
+Quando estiver dentro do prazo, o resultado deverá ser:
 
 ```
-190 × 1 = 190
-
-Subtotal esperado: R$ 190
-```
-
-## RF03 — Verificação do estoque
-
-O sistema deve verificar, **usando `if`/`else`**, se a quantidade solicitada está disponível no estoque.
-
-Quando a quantidade solicitada for menor ou igual ao estoque disponível, o resultado deverá ser:
-
-```
-Estoque suficiente
+Devolvido dentro do prazo
 ```
 
 Caso contrário:
 
 ```
-Estoque insuficiente
+Devolvido com atraso
 ```
 
 Para o cenário principal:
 
 ```
-Quantidade: 1
-Estoque: 16
+Dias com o item: 20
+Prazo (dias): 14
 
-Resultado esperado: Estoque suficiente
+Resultado esperado: Devolvido com atraso
 ```
 
-## RF04 — Frete grátis
+## RF03 — Cálculo dos dias de atraso
 
-A empresa possui uma regra comercial:
-
-> Pedidos com subtotal maior ou igual a R$ 1.000 têm direito a frete grátis. Pedidos abaixo desse valor pagam R$ 30 de frete.
->
-
-Utilizando um comparador (`>=`), o sistema deve calcular o valor do frete e informar a situação do frete:
+Quando estiver fora do prazo:
 
 ```
-Frete grátis
+dias de atraso = dias que o cliente ficou com o item - prazo de devolução em dias
 ```
 
-ou:
+Quando estiver dentro do prazo, os dias de atraso devem ser `0`.
+
+Para o cenário principal:
 
 ```
-Frete: R$ 30
+Dias de atraso esperados: 6
+```
+
+## RF04 — Cálculo da multa
+
+```
+multa = dias de atraso × valor da multa por dia de atraso
 ```
 
 Para o cenário principal:
 
 ```
-Subtotal: R$ 190
+6 × 3 = 18
 
-Situação esperada: Frete: R$ 30
-Valor do frete esperado: R$ 30
+Multa esperada: R$ 18
 ```
 
 ## RF05 — Cálculo do valor final
 
-O sistema deve somar o frete ao subtotal:
-
 ```
-valor final = subtotal + valor do frete
+valor final = taxa de serviço da locação + multa
 ```
 
 Para o cenário principal:
 
 ```
-190 + 30 = 220
+0 + 18 = 18
 ```
 
 ## RF06 — Verificação do pagamento
 
-O sistema deve verificar, usando comparadores, se o valor pago pelo cliente é suficiente para quitar a compra.
-
-Quando o valor pago for maior ou igual ao valor final, o resultado deverá ser:
+Quando o valor pago for maior ou igual ao valor final:
 
 ```
 Pagamento aprovado
@@ -139,74 +116,49 @@ Pagamento insuficiente
 Para o cenário principal:
 
 ```
-Valor final: R$ 220
-Valor pago: R$ 290
+Valor final: R$ 18
+Valor pago: R$ 15
 
-Resultado esperado: Pagamento aprovado
+Resultado esperado: Pagamento insuficiente
 ```
 
 ## RF07 — Cálculo do troco
 
-Quando o pagamento for aprovado, o sistema deve calcular o troco:
+Quando o pagamento for aprovado:
 
 ```
 troco = valor pago - valor final
 ```
 
+Quando o pagamento for insuficiente, troco deve ser `R$ 0`.
+
 Para o cenário principal:
 
 ```
-Troco esperado: R$ 70
+troco esperado: R$ 0
 ```
 
-Quando o pagamento for insuficiente, o troco deve ser:
+## RF08 — Situação da locação
+
+Usando `if`/`else` (pode ser um dentro do outro):
+
+- Se estiver dentro do prazo: `"Locação regularizada"`
+- Se estiver fora do prazo e o pagamento (com multa) estiver aprovado: `"Locação regularizada com multa paga"`
+- Se estiver fora do prazo e o pagamento não for suficiente: `"Locação pendente: multa não paga integralmente"`
+
+Para o cenário principal:
 
 ```
-R$ 0
+Locação pendente: multa não paga integralmente
 ```
 
-## RF08 — Situação da compra
+## RF09 — Resumo
 
-O sistema deve decidir se a compra pode ser confirmada.
+Gerar, utilizando **template string**, um texto com as principais informações.
 
-Quando houver **estoque suficiente e** o pagamento estiver **aprovado**, o resultado deverá ser:
+# 🧪 OUTRO CENÁRIO PARA VOCÊ TESTAR (não faz parte dos testes automáticos)
 
-```
-Compra confirmada
-```
-
-Em qualquer outro caso, o resultado deverá ser:
-
-```
-Compra não pode ser confirmada
-```
-
-Para o cenário principal, o resultado esperado é:
-
-```
-Compra confirmada
-```
-
-## RF09 — Resumo da compra
-
-O sistema deve gerar, utilizando **template string**, uma apresentação textual contendo as principais informações da compra:
-
-- cliente;
-- produto;
-- preço;
-- quantidade;
-- subtotal;
-- situação do frete e valor do frete;
-- valor final;
-- situação do pagamento;
-- troco;
-- situação da compra.
-
-O formato visual da apresentação fica a critério do desenvolvedor.
-
-# 🧪 OUTROS CENÁRIOS PARA VOCÊ TESTAR (não fazem parte dos testes automáticos)
-
-Depois de terminar o cenário principal, tente rodar seu programa mentalmente (ou trocando os valores) para conferir se ele se comporta corretamente em outras situações: quando o subtotal fica abaixo de R$ 1.000 (sem frete grátis), quando a quantidade pedida é maior que o estoque, e quando o valor pago é menor que o valor final.
+Pense no que aconteceria se o item fosse devolvido dentro do prazo: não haveria multa..
 
 Crie o arquivo `index.js` que deverá conter a solução desenvolvida por você, utilizando os dados do cenário principal (RF01).
 
@@ -215,19 +167,19 @@ No final, cole isso abaixo para que os testes funcionem:
 ```jsx
 module.exports = {
     cliente,
-    produto,
-    preco,
-    quantidade,
-    estoque,
+    item,
+    valorBase,
+    diasPermitidos,
+    diasUtilizados,
+    valorMultaPorDia,
     valorPago,
-    subtotal,
-    estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    prazoStatus,
+    diasAtraso,
+    multa,
     valorFinal,
     pagamentoStatus,
     troco,
-    statusCompra,
+    statusLocacao,
     resumo
 }
 ```

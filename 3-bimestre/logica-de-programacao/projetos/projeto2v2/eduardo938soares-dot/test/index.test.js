@@ -3,57 +3,57 @@ const {
     produto,
     preco,
     quantidade,
-    estoque,
+    capacidadeCaminhao,
     valorPago,
     subtotal,
-    estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    capacidadeStatus,
+    descontoStatus,
+    valorDesconto,
     valorFinal,
     pagamentoStatus,
     troco,
-    statusCompra,
+    statusPedido,
     resumo
 } = require("../index")
 
 
-test("Deve armazenar corretamente os dados da compra", () => {
+test("Deve armazenar corretamente os dados", () => {
 
-    expect(cliente).toBe("Thiago Cardoso")
-    expect(produto).toBe("Impressora Multifuncional")
-    expect(preco).toBe(700)
-    expect(quantidade).toBe(1)
-    expect(estoque).toBe(16)
-    expect(valorPago).toBe(800)
-
-})
-
-
-test("Deve calcular o subtotal corretamente", () => {
-
-    expect(subtotal).toBe(700)
+    expect(cliente).toBe("Renata Dias")
+    expect(produto).toBe("Garrafão de Água Mineral 20L")
+    expect(preco).toBe(4)
+    expect(quantidade).toBe(45)
+    expect(capacidadeCaminhao).toBe(40)
+    expect(valorPago).toBe(200)
 
 })
 
 
-test("Deve verificar corretamente a disponibilidade em estoque", () => {
+test("Deve calcular subtotal corretamente", () => {
 
-    expect(estoqueDisponivel).toBe("Estoque suficiente")
-
-})
-
-
-test("Deve calcular corretamente a situação do frete", () => {
-
-    expect(freteStatus).toBe("Frete: R$ 30")
-    expect(valorFrete).toBe(30)
+    expect(subtotal).toBe(180)
 
 })
 
 
-test("Deve calcular o valor final corretamente", () => {
+test("Deve verificar corretamente capacidade do caminhão de entrega", () => {
 
-    expect(valorFinal).toBe(730)
+    expect(capacidadeStatus).toBe("Excede a capacidade do caminhão")
+
+})
+
+
+test("Deve aplicar corretamente a regra comercial (RF04)", () => {
+
+    expect(descontoStatus).toBe("Desconto aplicado")
+    expect(valorDesconto).toBe(15)
+
+})
+
+
+test("Deve calcular valor final corretamente", () => {
+
+    expect(valorFinal).toBe(165)
 
 })
 
@@ -65,29 +65,28 @@ test("Deve verificar corretamente a situação do pagamento", () => {
 })
 
 
-test("Deve calcular o troco corretamente", () => {
+test("Deve calcular troco corretamente", () => {
 
-    expect(troco).toBe(70)
-
-})
-
-
-test("Deve verificar corretamente a situação final da compra", () => {
-
-    expect(statusCompra).toBe("Compra confirmada")
+    expect(troco).toBe(35)
 
 })
 
 
-test("Deve gerar um resumo contendo as informações da compra", () => {
+test("Deve verificar corretamente a situação final", () => {
 
-    expect(resumo).toContain("Thiago Cardoso")
-    expect(resumo).toContain("Impressora Multifuncional")
-    expect(resumo).toContain("700")
-    expect(resumo).toContain("700")
-    expect(resumo).toContain("Frete: R$ 30")
+    expect(statusPedido).toBe("Pedido não pode ser confirmado: excede a capacidade do caminhão")
+
+})
+
+
+test("Deve gerar um resumo contendo as informações principais", () => {
+
+    expect(resumo).toContain("Renata Dias")
+    expect(resumo).toContain("Garrafão de Água Mineral 20L")
+    expect(resumo).toContain("180")
+    expect(resumo).toContain("Desconto aplicado")
     expect(resumo).toContain("Pagamento aprovado")
-    expect(resumo).toContain("70")
-    expect(resumo).toContain("Compra confirmada")
+    expect(resumo).toContain("35")
+    expect(resumo).toContain("Pedido não pode ser confirmado: excede a capacidade do caminhão")
 
 })

@@ -1,212 +1,159 @@
-# 🚀 PROJETO 2 (v2) — SISTEMA DE VERIFICAÇÃO DE COMPRA ONLINE
+# 🚀 PROJETO 2 (v2) — SISTEMA DE ALUGUEL DE CARROS
 
 # 🎯 PROBLEMA
 
-Você continua fazendo parte da equipe de desenvolvimento que presta serviços para lojas de informática.
+Você desenvolve sistemas para a Locadora RodaViva.
 
-Na Sprint anterior, o time entregou um sistema que calculava o valor de um pedido. Agora, o setor **Comercial** pediu uma evolução: antes de confirmar uma compra, o sistema precisa **decidir** algumas coisas automaticamente, em vez de apenas calcular valores.
-
-Durante a reunião de **Sprint Planning**, o responsável pelo setor Comercial explicou:
-
-> "Precisamos que o sistema verifique se há estoque, decida se a compra tem direito a frete grátis, confira se o cliente pagou o suficiente e só então informe se a compra pode ser confirmada."
->
-
-O líder técnico transformou o pedido nos requisitos abaixo.
+A locadora quer verificar a disponibilidade de veículos, aplicar desconto para aluguéis mais longos e conferir o sinal pago pelo cliente.
 
 # 📋 PROJETO
 
-## RF01 — Registro da compra
+## RF01 — Registro do aluguel
 
-O sistema deve representar uma compra contendo:
+O sistema deve representar um aluguel contendo:
 
 - nome do cliente;
-- nome do produto;
-- preço do produto;
-- quantidade solicitada;
-- quantidade disponível em estoque;
-- valor pago pelo cliente.
+- veículo;
+- valor da diária;
+- número de dias de aluguel;
+- quantidade de veículos solicitados;
+- veículos disponíveis;
+- valor pago (sinal).
 
 Para os testes, será utilizado inicialmente:
 
 ```
-Cliente: Simone Vasconcelos
-Produto: HD Externo 2TB
-Preço: R$ 520
-Quantidade: 6
-Estoque: 3
-Valor pago: R$ 3620
+Cliente: Thiago Ramos
+Veículo: Hatch Compacto
+Valor da diária: R$ 120
+Dias de aluguel: 4
+Veículos solicitados: 1
+Veículos disponíveis: 6
+Valor pago: R$ 480
 ```
 
-## RF02 — Cálculo do subtotal
-
-O sistema deve calcular o valor total dos produtos considerando o preço unitário e a quantidade solicitada.
+## RF02 — Cálculo do valor base
 
 ```
-subtotal = preço × quantidade
+valor base = valor da diária × número de dias de aluguel
 ```
 
 Para o cenário principal:
 
 ```
-520 × 6 = 3120
-
-Subtotal esperado: R$ 3120
+120 × 4 = 480
 ```
 
-## RF03 — Verificação do estoque
+## RF03 — Verificação dos veículos disponíveis
 
-O sistema deve verificar, **usando `if`/`else`**, se a quantidade solicitada está disponível no estoque.
+O sistema deve verificar, **usando `if`/`else`**, se quantidade de veículos solicitados cabe dentro dos veículos disponíveis.
 
-Quando a quantidade solicitada for menor ou igual ao estoque disponível, o resultado deverá ser:
+Quando couber, o resultado deverá ser:
 
 ```
-Estoque suficiente
+Veículos disponíveis
 ```
 
 Caso contrário:
 
 ```
-Estoque insuficiente
+Veículos indisponíveis
 ```
 
 Para o cenário principal:
 
 ```
-Quantidade: 6
-Estoque: 3
+Veículos solicitados: 1
+Veículos disponíveis: 6
 
-Resultado esperado: Estoque insuficiente
+Resultado esperado: Veículos disponíveis
 ```
 
-## RF04 — Frete grátis
+## RF04 — Desconto para aluguel longo
 
-A empresa possui uma regra comercial:
-
-> Pedidos com subtotal maior ou igual a R$ 1.000 têm direito a frete grátis. Pedidos abaixo desse valor pagam R$ 30 de frete.
->
-
-Utilizando um comparador (`>=`), o sistema deve calcular o valor do frete e informar a situação do frete:
-
-```
-Frete grátis
-```
-
-ou:
-
-```
-Frete: R$ 30
-```
+Aluguéis com 10 dias ou mais recebem R$ 120 de desconto. Abaixo disso, não há desconto.
 
 Para o cenário principal:
 
 ```
-Subtotal: R$ 3120
+número de dias de aluguel: 4
 
-Situação esperada: Frete grátis
-Valor do frete esperado: R$ 0
+Situação esperada: Sem desconto
+Valor esperado: R$ 0
 ```
 
 ## RF05 — Cálculo do valor final
 
-O sistema deve somar o frete ao subtotal:
-
 ```
-valor final = subtotal + valor do frete
+valor final = valor base - valor do desconto
 ```
 
 Para o cenário principal:
 
 ```
-3120 + 0 = 3120
+480 - 0 = 480
 ```
 
 ## RF06 — Verificação do pagamento
 
-O sistema deve verificar, usando comparadores, se o valor pago pelo cliente é suficiente para quitar a compra.
-
-Quando o valor pago for maior ou igual ao valor final, o resultado deverá ser:
+Quando o valor pago for maior ou igual ao valor final:
 
 ```
-Pagamento aprovado
+Aluguel quitado
 ```
 
 Caso contrário:
 
 ```
-Pagamento insuficiente
+Aluguel com saldo pendente
 ```
 
 Para o cenário principal:
 
 ```
-Valor final: R$ 3120
-Valor pago: R$ 3620
+Valor final: R$ 480
+Valor pago: R$ 480
 
-Resultado esperado: Pagamento aprovado
+Resultado esperado: Aluguel quitado
 ```
 
-## RF07 — Cálculo do troco
+## RF07 — Cálculo do saldo devedor
 
-Quando o pagamento for aprovado, o sistema deve calcular o troco:
+Quando o pagamento for insuficiente:
 
 ```
-troco = valor pago - valor final
+saldo devedor = valor final - valor pago
 ```
+
+Quando o pagamento for suficiente, saldo devedor deve ser `R$ 0`.
 
 Para o cenário principal:
 
 ```
-Troco esperado: R$ 500
+saldo devedor esperado: R$ 0
 ```
 
-Quando o pagamento for insuficiente, o troco deve ser:
+## RF08 — Situação do aluguel
+
+Usando `if`/`else` (pode ser um dentro do outro):
+
+- Se veículos disponíveis estiver ok **e** o pagamento estiver aprovado: `"Aluguel confirmado"`
+- Se veículos disponíveis estiver ok, mas o pagamento **não** estiver aprovado: `"Aluguel confirmado com saldo pendente"`
+- Se veículos disponíveis **não** estiver ok: `"Aluguel não pode ser confirmado: veículos indisponíveis"`
+
+Para o cenário principal:
 
 ```
-R$ 0
+Aluguel confirmado
 ```
 
-## RF08 — Situação da compra
+## RF09 — Resumo
 
-O sistema deve decidir se a compra pode ser confirmada.
+Gerar, utilizando **template string**, um texto com as principais informações.
 
-Quando houver **estoque suficiente e** o pagamento estiver **aprovado**, o resultado deverá ser:
+# 🧪 OUTRO CENÁRIO PARA VOCÊ TESTAR (não faz parte dos testes automáticos)
 
-```
-Compra confirmada
-```
-
-Em qualquer outro caso, o resultado deverá ser:
-
-```
-Compra não pode ser confirmada
-```
-
-Para o cenário principal, o resultado esperado é:
-
-```
-Compra não pode ser confirmada
-```
-
-## RF09 — Resumo da compra
-
-O sistema deve gerar, utilizando **template string**, uma apresentação textual contendo as principais informações da compra:
-
-- cliente;
-- produto;
-- preço;
-- quantidade;
-- subtotal;
-- situação do frete e valor do frete;
-- valor final;
-- situação do pagamento;
-- troco;
-- situação da compra.
-
-O formato visual da apresentação fica a critério do desenvolvedor.
-
-# 🧪 OUTROS CENÁRIOS PARA VOCÊ TESTAR (não fazem parte dos testes automáticos)
-
-Depois de terminar o cenário principal, tente rodar seu programa mentalmente (ou trocando os valores) para conferir se ele se comporta corretamente em outras situações: quando o subtotal fica abaixo de R$ 1.000 (sem frete grátis), quando a quantidade pedida é maior que o estoque, e quando o valor pago é menor que o valor final.
+Pense no que aconteceria se o aluguel tivesse menos de 10 dias: o desconto não seria aplicado..
 
 Crie o arquivo `index.js` que deverá conter a solução desenvolvida por você, utilizando os dados do cenário principal (RF01).
 
@@ -215,19 +162,20 @@ No final, cole isso abaixo para que os testes funcionem:
 ```jsx
 module.exports = {
     cliente,
-    produto,
-    preco,
-    quantidade,
-    estoque,
+    veiculo,
+    valorUnidade,
+    periodo,
+    quantidadeReservada,
+    veiculosDisponiveis,
     valorPago,
-    subtotal,
-    estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    valorBase,
+    disponibilidadeStatus,
+    descontoStatus,
+    valorDesconto,
     valorFinal,
     pagamentoStatus,
-    troco,
-    statusCompra,
+    saldoDevedor,
+    statusAluguel,
     resumo
 }
 ```

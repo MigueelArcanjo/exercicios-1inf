@@ -1,93 +1,92 @@
 const {
-    cliente,
-    produto,
-    preco,
-    quantidade,
-    estoque,
+    aluno,
+    categoriaCnh,
+    valorMensalidade,
+    taxaMatricula,
+    idade,
+    pagamentoAntecipado,
     valorPago,
-    subtotal,
-    estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    valorBase,
+    idadeStatus,
+    descontoStatus,
+    valorDesconto,
     valorFinal,
     pagamentoStatus,
     troco,
-    statusCompra,
+    statusMatricula,
     resumo
 } = require("../index")
 
 
-test("Deve armazenar corretamente os dados da compra", () => {
+test("Deve armazenar corretamente os dados", () => {
 
-    expect(cliente).toBe("Cristina Vieira")
-    expect(produto).toBe("Gabinete Gamer")
-    expect(preco).toBe(420)
-    expect(quantidade).toBe(6)
-    expect(estoque).toBe(3)
-    expect(valorPago).toBe(3020)
-
-})
-
-
-test("Deve calcular o subtotal corretamente", () => {
-
-    expect(subtotal).toBe(2520)
+    expect(aluno).toBe("Rafael Tomé")
+    expect(categoriaCnh).toBe("B")
+    expect(valorMensalidade).toBe(900)
+    expect(taxaMatricula).toBe(100)
+    expect(idade).toBe(19)
+    expect(pagamentoAntecipado).toBe(1)
+    expect(valorPago).toBe(930)
 
 })
 
 
-test("Deve verificar corretamente a disponibilidade em estoque", () => {
+test("Deve calcular o valor base corretamente", () => {
 
-    expect(estoqueDisponivel).toBe("Estoque insuficiente")
+    expect(valorBase).toBe(1000)
 
 })
 
 
-test("Deve calcular corretamente a situação do frete", () => {
+test("Deve verificar corretamente idade mínima de 18 anos", () => {
 
-    expect(freteStatus).toBe("Frete grátis")
-    expect(valorFrete).toBe(0)
+    expect(idadeStatus).toBe("Idade permitida")
+
+})
+
+
+test("Deve aplicar corretamente a regra do RF04", () => {
+
+    expect(descontoStatus).toBe("Desconto de pagamento antecipado aplicado")
+    expect(valorDesconto).toBe(70)
 
 })
 
 
 test("Deve calcular o valor final corretamente", () => {
 
-    expect(valorFinal).toBe(2520)
+    expect(valorFinal).toBe(930)
 
 })
 
 
 test("Deve verificar corretamente a situação do pagamento", () => {
 
-    expect(pagamentoStatus).toBe("Pagamento aprovado")
+    expect(pagamentoStatus).toBe("Matrícula quitada")
 
 })
 
 
 test("Deve calcular o troco corretamente", () => {
 
-    expect(troco).toBe(500)
+    expect(troco).toBe(0)
 
 })
 
 
-test("Deve verificar corretamente a situação final da compra", () => {
+test("Deve verificar corretamente a situação final", () => {
 
-    expect(statusCompra).toBe("Compra não pode ser confirmada")
+    expect(statusMatricula).toBe("Matrícula confirmada")
 
 })
 
 
-test("Deve gerar um resumo contendo as informações da compra", () => {
+test("Deve gerar um resumo contendo as informações principais", () => {
 
-    expect(resumo).toContain("Cristina Vieira")
-    expect(resumo).toContain("Gabinete Gamer")
-    expect(resumo).toContain("420")
-    expect(resumo).toContain("2520")
-    expect(resumo).toContain("Frete grátis")
-    expect(resumo).toContain("Pagamento aprovado")
-    expect(resumo).toContain("500")
-    expect(resumo).toContain("Compra não pode ser confirmada")
+    expect(resumo).toContain("Rafael Tomé")
+    expect(resumo).toContain("B")
+    expect(resumo).toContain("930")
+    expect(resumo).toContain("Matrícula quitada")
+    expect(resumo).toContain("Matrícula confirmada")
 
 })

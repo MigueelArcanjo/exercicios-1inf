@@ -1,37 +1,36 @@
-# 🚀 PROJETO 2 (v2) — SISTEMA DE VERIFICAÇÃO DE COMPRA ONLINE
+# 🚀 PROJETO 2 (v2) — SISTEMA DE VENDA EM LOJA DE ROUPAS
 
 # 📋 O QUE FAZER
 
-Crie um programa que verifica uma compra.
+Crie um programa que resolve o problema abaixo.
 
-Dados da compra:
+Dados:
 
 ```
-Cliente: Patrícia Farias
-Produto: Headset Gamer
-Preço: R$ 350
-Quantidade: 2
+Cliente: Diego Martins
+Peça: Camiseta Branca
+Preço: R$ 50
+Quantidade: 3
 Estoque: 10
-Valor pago: R$ 1100
+Valor pago: R$ 200
 ```
 
 # ✅ O QUE O PROGRAMA DEVE CALCULAR
 
-1. `subtotal` = preço × quantidade
-2. `estoqueDisponivel` = `"Estoque suficiente"` se quantidade ≤ estoque, senão `"Estoque insuficiente"`
-3. `freteStatus` e `valorFrete`:
-   - se subtotal ≥ 1000 → `"Frete grátis"` e `0`
-   - senão → `"Frete: R$ 30"` e `30`
-4. `valorFinal` = subtotal + valorFrete
+1. `subtotal` = preço × quantidade solicitada
+2. `estoqueDisponivel` = `"Estoque suficiente"` se quantidade solicitada ≤ estoque disponível, senão `"Estoque insuficiente"`
+3. `cupomStatus` e `valorCupom`:
+   - se subtotal ≥ 200 → `"Cupom aplicado"` e `40`
+   - senão → `"Sem cupom"` e `0`
+4. `valorFinal` = subtotal - valorCupom
 5. `pagamentoStatus` = `"Pagamento aprovado"` se valor pago ≥ valorFinal, senão `"Pagamento insuficiente"`
 6. `troco` = valorPago - valorFinal (se aprovado), senão `0`
-7. `statusCompra` = `"Compra confirmada"` se estoque suficiente **e** pagamento aprovado, senão `"Compra não pode ser confirmada"`
+7. `statusCompra`: `"Compra confirmada"` se estoque disponível estiver ok e o pagamento estiver aprovado; `"Compra pendente de pagamento"` se estoque disponível estiver ok mas o pagamento não; `"Compra não pode ser confirmada por falta de estoque"` se estoque disponível não estiver ok
 8. `resumo`: uma template string com essas informações
 
-# 🧩 EXEMPLO (com outros nomes, só para mostrar o formato)
+# 🧩 EXEMPLO (nomes diferentes, só para mostrar o formato)
 
 ```jsx
-const nome = "Pessoa Exemplo"
 const idade = 20
 
 if (idade >= 18) {
@@ -41,17 +40,41 @@ if (idade >= 18) {
 }
 ```
 
-# 📤 Resultado esperado para os dados desta compra
+# 📤 Resultado esperado para estes dados
 
 ```
-subtotal: 700
+subtotal: 150
 estoqueDisponivel: Estoque suficiente
-freteStatus: Frete: R$ 30
-valorFrete: 30
-valorFinal: 730
+cupomStatus: Sem cupom
+valorCupom: 0
+valorFinal: 150
 pagamentoStatus: Pagamento aprovado
-troco: 370
+troco: 50
 statusCompra: Compra confirmada
+```
+
+Crie o arquivo `index.js` que deverá conter a solução desenvolvida por você, utilizando os dados do cenário principal (RF01).
+
+No final, cole isso abaixo para que os testes funcionem:
+
+```jsx
+module.exports = {
+    cliente,
+    peca,
+    preco,
+    quantidade,
+    estoque,
+    valorPago,
+    subtotal,
+    estoqueDisponivel,
+    cupomStatus,
+    valorCupom,
+    valorFinal,
+    pagamentoStatus,
+    troco,
+    statusCompra,
+    resumo
+}
 ```
 
 # 📂 Estrutura do projeto
@@ -66,24 +89,4 @@ projeto2v2
  ┗ README.md
 ```
 
-Crie o arquivo `index.js`. No final, cole isso para os testes funcionarem:
-
-```jsx
-module.exports = {
-    cliente,
-    produto,
-    preco,
-    quantidade,
-    estoque,
-    valorPago,
-    subtotal,
-    estoqueDisponivel,
-    freteStatus,
-    valorFrete,
-    valorFinal,
-    pagamentoStatus,
-    troco,
-    statusCompra,
-    resumo
-}
-```
+Boas práticas! 🤙

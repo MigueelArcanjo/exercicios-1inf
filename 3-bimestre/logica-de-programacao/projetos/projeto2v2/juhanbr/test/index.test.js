@@ -1,93 +1,93 @@
 const {
-    cliente,
-    produto,
-    preco,
-    quantidade,
-    estoque,
+    contratante,
+    pacote,
+    valorUnidade,
+    periodo,
+    quantidadeReservada,
+    mesasDisponiveis,
     valorPago,
-    subtotal,
-    estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    valorBase,
+    capacidadeStatus,
+    descontoStatus,
+    valorDesconto,
     valorFinal,
     pagamentoStatus,
-    troco,
-    statusCompra,
+    saldoDevedor,
+    statusOrcamento,
     resumo
 } = require("../index")
 
 
-test("Deve armazenar corretamente os dados da compra", () => {
+test("Deve armazenar corretamente os dados", () => {
 
-    expect(cliente).toBe("Gustavo Freitas")
-    expect(produto).toBe("Monitor Ultrawide")
-    expect(preco).toBe(1900)
-    expect(quantidade).toBe(2)
-    expect(estoque).toBe(12)
-    expect(valorPago).toBe(2280)
-
-})
-
-
-test("Deve calcular o subtotal corretamente", () => {
-
-    expect(subtotal).toBe(3800)
+    expect(contratante).toBe("Isabela Rocha")
+    expect(pacote).toBe("Pacote Diamante")
+    expect(valorUnidade).toBe(250)
+    expect(periodo).toBe(7)
+    expect(quantidadeReservada).toBe(20)
+    expect(mesasDisponiveis).toBe(12)
+    expect(valorPago).toBe(1000)
 
 })
 
 
-test("Deve verificar corretamente a disponibilidade em estoque", () => {
+test("Deve calcular o valor base corretamente", () => {
 
-    expect(estoqueDisponivel).toBe("Estoque suficiente")
+    expect(valorBase).toBe(1750)
 
 })
 
 
-test("Deve calcular corretamente a situação do frete", () => {
+test("Deve verificar corretamente mesas disponíveis no espaço", () => {
 
-    expect(freteStatus).toBe("Frete grátis")
-    expect(valorFrete).toBe(0)
+    expect(capacidadeStatus).toBe("Espaço não comporta o evento")
+
+})
+
+
+test("Deve aplicar corretamente a regra do RF04", () => {
+
+    expect(descontoStatus).toBe("Desconto de evento longo aplicado")
+    expect(valorDesconto).toBe(100)
 
 })
 
 
 test("Deve calcular o valor final corretamente", () => {
 
-    expect(valorFinal).toBe(3800)
+    expect(valorFinal).toBe(1650)
 
 })
 
 
 test("Deve verificar corretamente a situação do pagamento", () => {
 
-    expect(pagamentoStatus).toBe("Pagamento insuficiente")
+    expect(pagamentoStatus).toBe("Orçamento com saldo pendente")
 
 })
 
 
-test("Deve calcular o troco corretamente", () => {
+test("Deve calcular saldo devedor corretamente", () => {
 
-    expect(troco).toBe(0)
-
-})
-
-
-test("Deve verificar corretamente a situação final da compra", () => {
-
-    expect(statusCompra).toBe("Compra não pode ser confirmada")
+    expect(saldoDevedor).toBe(650)
 
 })
 
 
-test("Deve gerar um resumo contendo as informações da compra", () => {
+test("Deve verificar corretamente a situação final", () => {
 
-    expect(resumo).toContain("Gustavo Freitas")
-    expect(resumo).toContain("Monitor Ultrawide")
-    expect(resumo).toContain("1900")
-    expect(resumo).toContain("3800")
-    expect(resumo).toContain("Frete grátis")
-    expect(resumo).toContain("Pagamento insuficiente")
-    expect(resumo).toContain("0")
-    expect(resumo).toContain("Compra não pode ser confirmada")
+    expect(statusOrcamento).toBe("Orçamento não pode ser confirmado: espaço não comporta o evento")
+
+})
+
+
+test("Deve gerar um resumo contendo as informações principais", () => {
+
+    expect(resumo).toContain("Isabela Rocha")
+    expect(resumo).toContain("Pacote Diamante")
+    expect(resumo).toContain("1750")
+    expect(resumo).toContain("Desconto de evento longo aplicado")
+    expect(resumo).toContain("Orçamento com saldo pendente")
+    expect(resumo).toContain("Orçamento não pode ser confirmado: espaço não comporta o evento")
 
 })

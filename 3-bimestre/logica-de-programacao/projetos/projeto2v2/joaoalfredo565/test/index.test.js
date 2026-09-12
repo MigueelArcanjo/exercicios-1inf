@@ -1,93 +1,93 @@
 const {
-    cliente,
-    produto,
-    preco,
-    quantidade,
-    estoque,
+    hospede,
+    chale,
+    valorUnidade,
+    periodo,
+    quantidadeReservada,
+    chalesDisponiveis,
     valorPago,
-    subtotal,
-    estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    valorBase,
+    disponibilidadeStatus,
+    descontoStatus,
+    valorDesconto,
     valorFinal,
     pagamentoStatus,
-    troco,
-    statusCompra,
+    saldoDevedor,
+    statusReserva,
     resumo
 } = require("../index")
 
 
-test("Deve armazenar corretamente os dados da compra", () => {
+test("Deve armazenar corretamente os dados", () => {
 
-    expect(cliente).toBe("Felipe Duarte")
-    expect(produto).toBe("Placa Mãe")
-    expect(preco).toBe(950)
-    expect(quantidade).toBe(1)
-    expect(estoque).toBe(16)
-    expect(valorPago).toBe(1050)
-
-})
-
-
-test("Deve calcular o subtotal corretamente", () => {
-
-    expect(subtotal).toBe(950)
+    expect(hospede).toBe("Rodrigo Farias")
+    expect(chale).toBe("Chalé Duplo")
+    expect(valorUnidade).toBe(400)
+    expect(periodo).toBe(8)
+    expect(quantidadeReservada).toBe(2)
+    expect(chalesDisponiveis).toBe(1)
+    expect(valorPago).toBe(2000)
 
 })
 
 
-test("Deve verificar corretamente a disponibilidade em estoque", () => {
+test("Deve calcular o valor base corretamente", () => {
 
-    expect(estoqueDisponivel).toBe("Estoque suficiente")
+    expect(valorBase).toBe(3200)
 
 })
 
 
-test("Deve calcular corretamente a situação do frete", () => {
+test("Deve verificar corretamente chalés disponíveis", () => {
 
-    expect(freteStatus).toBe("Frete: R$ 30")
-    expect(valorFrete).toBe(30)
+    expect(disponibilidadeStatus).toBe("Chalés indisponíveis")
+
+})
+
+
+test("Deve aplicar corretamente a regra do RF04", () => {
+
+    expect(descontoStatus).toBe("Desconto de estadia longa aplicado")
+    expect(valorDesconto).toBe(150)
 
 })
 
 
 test("Deve calcular o valor final corretamente", () => {
 
-    expect(valorFinal).toBe(980)
+    expect(valorFinal).toBe(3050)
 
 })
 
 
 test("Deve verificar corretamente a situação do pagamento", () => {
 
-    expect(pagamentoStatus).toBe("Pagamento aprovado")
+    expect(pagamentoStatus).toBe("Reserva com saldo pendente")
 
 })
 
 
-test("Deve calcular o troco corretamente", () => {
+test("Deve calcular saldo devedor corretamente", () => {
 
-    expect(troco).toBe(70)
-
-})
-
-
-test("Deve verificar corretamente a situação final da compra", () => {
-
-    expect(statusCompra).toBe("Compra confirmada")
+    expect(saldoDevedor).toBe(1050)
 
 })
 
 
-test("Deve gerar um resumo contendo as informações da compra", () => {
+test("Deve verificar corretamente a situação final", () => {
 
-    expect(resumo).toContain("Felipe Duarte")
-    expect(resumo).toContain("Placa Mãe")
-    expect(resumo).toContain("950")
-    expect(resumo).toContain("950")
-    expect(resumo).toContain("Frete: R$ 30")
-    expect(resumo).toContain("Pagamento aprovado")
-    expect(resumo).toContain("70")
-    expect(resumo).toContain("Compra confirmada")
+    expect(statusReserva).toBe("Reserva não pode ser confirmada: sem chalés disponíveis")
+
+})
+
+
+test("Deve gerar um resumo contendo as informações principais", () => {
+
+    expect(resumo).toContain("Rodrigo Farias")
+    expect(resumo).toContain("Chalé Duplo")
+    expect(resumo).toContain("3200")
+    expect(resumo).toContain("Desconto de estadia longa aplicado")
+    expect(resumo).toContain("Reserva com saldo pendente")
+    expect(resumo).toContain("Reserva não pode ser confirmada: sem chalés disponíveis")
 
 })

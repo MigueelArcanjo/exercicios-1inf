@@ -1,63 +1,54 @@
-# 🚀 PROJETO 2 (v2) — SISTEMA DE VERIFICAÇÃO DE COMPRA ONLINE
+# 🚀 PROJETO 2 (v2) — SISTEMA DE VENDA EM LOJA DE ELETRÔNICOS
 
 # 🎯 PROBLEMA
 
-Você continua fazendo parte da equipe de desenvolvimento que presta serviços para lojas de informática.
+Você desenvolve sistemas para a loja MegaEletro.
 
-Na Sprint anterior, o time entregou um sistema que calculava o valor de um pedido. Agora, o setor **Comercial** pediu uma evolução: antes de confirmar uma compra, o sistema precisa **decidir** algumas coisas automaticamente, em vez de apenas calcular valores.
-
-Durante a reunião de **Sprint Planning**, o responsável pelo setor Comercial explicou:
-
-> "Precisamos que o sistema verifique se há estoque, decida se a compra tem direito a frete grátis, confira se o cliente pagou o suficiente e só então informe se a compra pode ser confirmada."
->
-
-O líder técnico transformou o pedido nos requisitos abaixo.
+A loja quer conferir o estoque de aparelhos, cobrar uma taxa de entrega expressa para pedidos pequenos e verificar o pagamento.
 
 # 📋 PROJETO
 
-## RF01 — Registro da compra
+## RF01 — Registro da venda
 
-O sistema deve representar uma compra contendo:
+O sistema deve representar uma venda contendo:
 
 - nome do cliente;
-- nome do produto;
-- preço do produto;
+- nome do aparelho;
+- preço;
 - quantidade solicitada;
-- quantidade disponível em estoque;
-- valor pago pelo cliente.
+- estoque disponível;
+- valor pago.
 
 Para os testes, será utilizado inicialmente:
 
 ```
-Cliente: Juliana Prado
-Produto: SSD 1TB
-Preço: R$ 550
-Quantidade: 6
-Estoque: 3
-Valor pago: R$ 3800
+Cliente: Henrique Souza
+Aparelho: Fone Bluetooth
+Preço: R$ 90
+Quantidade: 2
+Estoque: 8
+Valor pago: R$ 200
 ```
 
 ## RF02 — Cálculo do subtotal
 
-O sistema deve calcular o valor total dos produtos considerando o preço unitário e a quantidade solicitada.
+O sistema deve calcular:
 
 ```
-subtotal = preço × quantidade
+subtotal = preço × quantidade solicitada
 ```
 
 Para o cenário principal:
 
 ```
-550 × 6 = 3300
-
-Subtotal esperado: R$ 3300
+90 × 2 = 180
 ```
 
-## RF03 — Verificação do estoque
+## RF03 — Verificação do estoque disponível
 
-O sistema deve verificar, **usando `if`/`else`**, se a quantidade solicitada está disponível no estoque.
+O sistema deve verificar, **usando `if`/`else`**, se quantidade solicitada está dentro do estoque disponível.
 
-Quando a quantidade solicitada for menor ou igual ao estoque disponível, o resultado deverá ser:
+Quando estiver dentro do limite, o resultado deverá ser:
 
 ```
 Estoque suficiente
@@ -72,57 +63,52 @@ Estoque insuficiente
 Para o cenário principal:
 
 ```
-Quantidade: 6
-Estoque: 3
+Quantidade: 2
+Estoque: 8
 
-Resultado esperado: Estoque insuficiente
+Resultado esperado: Estoque suficiente
 ```
 
-## RF04 — Frete grátis
+## RF04 — Taxa de entrega expressa
 
-A empresa possui uma regra comercial:
+Pedidos com subtotal abaixo de R$ 300 pagam uma taxa de entrega expressa de R$ 25. Pedidos a partir de R$ 300 têm entrega grátis.
 
-> Pedidos com subtotal maior ou igual a R$ 1.000 têm direito a frete grátis. Pedidos abaixo desse valor pagam R$ 30 de frete.
->
-
-Utilizando um comparador (`>=`), o sistema deve calcular o valor do frete e informar a situação do frete:
+Utilizando um comparador, o sistema deve calcular:
 
 ```
-Frete grátis
+Entrega grátis
 ```
 
 ou:
 
 ```
-Frete: R$ 30
+Taxa de entrega: R$ 25
 ```
 
 Para o cenário principal:
 
 ```
-Subtotal: R$ 3300
+subtotal: R$ 180
 
-Situação esperada: Frete grátis
-Valor do frete esperado: R$ 0
+Situação esperada: Taxa de entrega: R$ 25
+Valor esperado: R$ 25
 ```
 
 ## RF05 — Cálculo do valor final
 
-O sistema deve somar o frete ao subtotal:
-
 ```
-valor final = subtotal + valor do frete
+valor final = subtotal + valor da entrega
 ```
 
 Para o cenário principal:
 
 ```
-3300 + 0 = 3300
+180 + 25 = 205
 ```
 
 ## RF06 — Verificação do pagamento
 
-O sistema deve verificar, usando comparadores, se o valor pago pelo cliente é suficiente para quitar a compra.
+O sistema deve verificar, usando comparadores, se o valor pago é suficiente.
 
 Quando o valor pago for maior ou igual ao valor final, o resultado deverá ser:
 
@@ -139,74 +125,51 @@ Pagamento insuficiente
 Para o cenário principal:
 
 ```
-Valor final: R$ 3300
-Valor pago: R$ 3800
+valor final (R$): 205
+Valor pago: R$ 200
 
-Resultado esperado: Pagamento aprovado
+Resultado esperado: Pagamento insuficiente
 ```
 
 ## RF07 — Cálculo do troco
 
-Quando o pagamento for aprovado, o sistema deve calcular o troco:
+Quando o pagamento for aprovado:
 
 ```
 troco = valor pago - valor final
 ```
 
+Quando o pagamento for insuficiente, troco deve ser `R$ 0`.
+
 Para o cenário principal:
 
 ```
-Troco esperado: R$ 500
+troco esperado: R$ 0
 ```
 
-Quando o pagamento for insuficiente, o troco deve ser:
+## RF08 — Situação da venda
 
-```
-R$ 0
-```
+O sistema deve decidir a situação final, usando `if`/`else` (pode ser um `if` dentro do outro):
 
-## RF08 — Situação da compra
-
-O sistema deve decidir se a compra pode ser confirmada.
-
-Quando houver **estoque suficiente e** o pagamento estiver **aprovado**, o resultado deverá ser:
-
-```
-Compra confirmada
-```
-
-Em qualquer outro caso, o resultado deverá ser:
-
-```
-Compra não pode ser confirmada
-```
+- Se estoque disponível estiver ok **e** o pagamento estiver aprovado: `"Venda confirmada"`
+- Se estoque disponível estiver ok, mas o pagamento **não** estiver aprovado: `"Venda pendente de pagamento"`
+- Se estoque disponível **não** estiver ok (independente do pagamento): `"Venda não pode ser confirmada por falta de estoque"`
 
 Para o cenário principal, o resultado esperado é:
 
 ```
-Compra não pode ser confirmada
+Venda pendente de pagamento
 ```
 
-## RF09 — Resumo da compra
+## RF09 — Resumo
 
-O sistema deve gerar, utilizando **template string**, uma apresentação textual contendo as principais informações da compra:
+O sistema deve gerar, utilizando **template string**, um texto com as principais informações.
 
-- cliente;
-- produto;
-- preço;
-- quantidade;
-- subtotal;
-- situação do frete e valor do frete;
-- valor final;
-- situação do pagamento;
-- troco;
-- situação da compra.
+O formato visual fica a critério do desenvolvedor.
 
-O formato visual da apresentação fica a critério do desenvolvedor.
+# 🧪 OUTRO CENÁRIO PARA VOCÊ TESTAR (não faz parte dos testes automáticos)
 
-# 🧪 OUTROS CENÁRIOS PARA VOCÊ TESTAR (não fazem parte dos testes automáticos)
-
-Depois de terminar o cenário principal, tente rodar seu programa mentalmente (ou trocando os valores) para conferir se ele se comporta corretamente em outras situações: quando o subtotal fica abaixo de R$ 1.000 (sem frete grátis), quando a quantidade pedida é maior que o estoque, e quando o valor pago é menor que o valor final.
+Depois de terminar o cenário principal, tente pensar no que aconteceria se o subtotal fosse maior ou igual a R$ 300: a entrega passaria a ser grátis..
 
 Crie o arquivo `index.js` que deverá conter a solução desenvolvida por você, utilizando os dados do cenário principal (RF01).
 
@@ -215,19 +178,19 @@ No final, cole isso abaixo para que os testes funcionem:
 ```jsx
 module.exports = {
     cliente,
-    produto,
+    aparelho,
     preco,
     quantidade,
     estoque,
     valorPago,
     subtotal,
     estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    entregaStatus,
+    valorEntrega,
     valorFinal,
     pagamentoStatus,
     troco,
-    statusCompra,
+    statusVenda,
     resumo
 }
 ```

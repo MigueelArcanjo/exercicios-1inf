@@ -1,66 +1,68 @@
 const {
-    cliente,
-    produto,
-    preco,
-    quantidade,
-    estoque,
+    aluno,
+    curso,
+    valorMensalidade,
+    taxaMatricula,
+    idade,
+    pagamentoAntecipado,
     valorPago,
-    subtotal,
-    estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    valorBase,
+    idadeStatus,
+    descontoStatus,
+    valorDesconto,
     valorFinal,
     pagamentoStatus,
     troco,
-    statusCompra,
+    statusMatricula,
     resumo
 } = require("../index")
 
 
-test("Deve armazenar corretamente os dados da compra", () => {
+test("Deve armazenar corretamente os dados", () => {
 
-    expect(cliente).toBe("Márcio Sales")
-    expect(produto).toBe("Leitor de Cartão SD")
-    expect(preco).toBe(55)
-    expect(quantidade).toBe(2)
-    expect(estoque).toBe(12)
-    expect(valorPago).toBe(80)
-
-})
-
-
-test("Deve calcular o subtotal corretamente", () => {
-
-    expect(subtotal).toBe(110)
+    expect(aluno).toBe("Melissa Rocha")
+    expect(curso).toBe("Curso Técnico em Redes")
+    expect(valorMensalidade).toBe(700)
+    expect(taxaMatricula).toBe(80)
+    expect(idade).toBe(17)
+    expect(pagamentoAntecipado).toBe(0)
+    expect(valorPago).toBe(780)
 
 })
 
 
-test("Deve verificar corretamente a disponibilidade em estoque", () => {
+test("Deve calcular o valor base corretamente", () => {
 
-    expect(estoqueDisponivel).toBe("Estoque suficiente")
+    expect(valorBase).toBe(780)
 
 })
 
 
-test("Deve calcular corretamente a situação do frete", () => {
+test("Deve verificar corretamente idade mínima de 18 anos", () => {
 
-    expect(freteStatus).toBe("Frete: R$ 30")
-    expect(valorFrete).toBe(30)
+    expect(idadeStatus).toBe("Idade não permitida")
+
+})
+
+
+test("Deve aplicar corretamente a regra do RF04", () => {
+
+    expect(descontoStatus).toBe("Sem desconto")
+    expect(valorDesconto).toBe(0)
 
 })
 
 
 test("Deve calcular o valor final corretamente", () => {
 
-    expect(valorFinal).toBe(140)
+    expect(valorFinal).toBe(780)
 
 })
 
 
 test("Deve verificar corretamente a situação do pagamento", () => {
 
-    expect(pagamentoStatus).toBe("Pagamento insuficiente")
+    expect(pagamentoStatus).toBe("Matrícula quitada")
 
 })
 
@@ -72,22 +74,19 @@ test("Deve calcular o troco corretamente", () => {
 })
 
 
-test("Deve verificar corretamente a situação final da compra", () => {
+test("Deve verificar corretamente a situação final", () => {
 
-    expect(statusCompra).toBe("Compra não pode ser confirmada")
+    expect(statusMatricula).toBe("Matrícula não pode ser confirmada: idade não permitida")
 
 })
 
 
-test("Deve gerar um resumo contendo as informações da compra", () => {
+test("Deve gerar um resumo contendo as informações principais", () => {
 
-    expect(resumo).toContain("Márcio Sales")
-    expect(resumo).toContain("Leitor de Cartão SD")
-    expect(resumo).toContain("55")
-    expect(resumo).toContain("110")
-    expect(resumo).toContain("Frete: R$ 30")
-    expect(resumo).toContain("Pagamento insuficiente")
-    expect(resumo).toContain("0")
-    expect(resumo).toContain("Compra não pode ser confirmada")
+    expect(resumo).toContain("Melissa Rocha")
+    expect(resumo).toContain("Curso Técnico em Redes")
+    expect(resumo).toContain("780")
+    expect(resumo).toContain("Matrícula quitada")
+    expect(resumo).toContain("Matrícula não pode ser confirmada: idade não permitida")
 
 })

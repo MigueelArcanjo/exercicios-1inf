@@ -1,93 +1,93 @@
 const {
     cliente,
-    produto,
-    preco,
-    quantidade,
-    estoque,
+    sala,
+    valorUnidade,
+    periodo,
+    quantidadeReservada,
+    salasDisponiveis,
     valorPago,
-    subtotal,
-    estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    valorBase,
+    disponibilidadeStatus,
+    descontoStatus,
+    valorDesconto,
     valorFinal,
     pagamentoStatus,
-    troco,
-    statusCompra,
+    saldoDevedor,
+    statusReserva,
     resumo
 } = require("../index")
 
 
-test("Deve armazenar corretamente os dados da compra", () => {
+test("Deve armazenar corretamente os dados", () => {
 
-    expect(cliente).toBe("Vinícius Guedes")
-    expect(produto).toBe("Mousepad Gamer XL")
-    expect(preco).toBe(60)
-    expect(quantidade).toBe(1)
-    expect(estoque).toBe(16)
-    expect(valorPago).toBe(160)
-
-})
-
-
-test("Deve calcular o subtotal corretamente", () => {
-
-    expect(subtotal).toBe(60)
+    expect(cliente).toBe("Juliana Prado")
+    expect(sala).toBe("Sala de Dança de Salão")
+    expect(valorUnidade).toBe(50)
+    expect(periodo).toBe(5)
+    expect(quantidadeReservada).toBe(2)
+    expect(salasDisponiveis).toBe(1)
+    expect(valorPago).toBe(150)
 
 })
 
 
-test("Deve verificar corretamente a disponibilidade em estoque", () => {
+test("Deve calcular o valor base corretamente", () => {
 
-    expect(estoqueDisponivel).toBe("Estoque suficiente")
+    expect(valorBase).toBe(250)
 
 })
 
 
-test("Deve calcular corretamente a situação do frete", () => {
+test("Deve verificar corretamente salas disponíveis no horário", () => {
 
-    expect(freteStatus).toBe("Frete: R$ 30")
-    expect(valorFrete).toBe(30)
+    expect(disponibilidadeStatus).toBe("Salas indisponíveis")
+
+})
+
+
+test("Deve aplicar corretamente a regra do RF04", () => {
+
+    expect(descontoStatus).toBe("Desconto de reserva longa aplicado")
+    expect(valorDesconto).toBe(25)
 
 })
 
 
 test("Deve calcular o valor final corretamente", () => {
 
-    expect(valorFinal).toBe(90)
+    expect(valorFinal).toBe(225)
 
 })
 
 
 test("Deve verificar corretamente a situação do pagamento", () => {
 
-    expect(pagamentoStatus).toBe("Pagamento aprovado")
+    expect(pagamentoStatus).toBe("Reserva com saldo pendente")
 
 })
 
 
-test("Deve calcular o troco corretamente", () => {
+test("Deve calcular saldo devedor corretamente", () => {
 
-    expect(troco).toBe(70)
-
-})
-
-
-test("Deve verificar corretamente a situação final da compra", () => {
-
-    expect(statusCompra).toBe("Compra confirmada")
+    expect(saldoDevedor).toBe(75)
 
 })
 
 
-test("Deve gerar um resumo contendo as informações da compra", () => {
+test("Deve verificar corretamente a situação final", () => {
 
-    expect(resumo).toContain("Vinícius Guedes")
-    expect(resumo).toContain("Mousepad Gamer XL")
-    expect(resumo).toContain("60")
-    expect(resumo).toContain("60")
-    expect(resumo).toContain("Frete: R$ 30")
-    expect(resumo).toContain("Pagamento aprovado")
-    expect(resumo).toContain("70")
-    expect(resumo).toContain("Compra confirmada")
+    expect(statusReserva).toBe("Reserva não pode ser confirmada: salas indisponíveis")
+
+})
+
+
+test("Deve gerar um resumo contendo as informações principais", () => {
+
+    expect(resumo).toContain("Juliana Prado")
+    expect(resumo).toContain("Sala de Dança de Salão")
+    expect(resumo).toContain("250")
+    expect(resumo).toContain("Desconto de reserva longa aplicado")
+    expect(resumo).toContain("Reserva com saldo pendente")
+    expect(resumo).toContain("Reserva não pode ser confirmada: salas indisponíveis")
 
 })

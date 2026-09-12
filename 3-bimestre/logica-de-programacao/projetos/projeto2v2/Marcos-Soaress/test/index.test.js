@@ -1,93 +1,93 @@
 const {
     cliente,
-    produto,
-    preco,
-    quantidade,
-    estoque,
+    quadra,
+    valorUnidade,
+    periodo,
+    quantidadeReservada,
+    quadrasDisponiveis,
     valorPago,
-    subtotal,
-    estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    valorBase,
+    disponibilidadeStatus,
+    descontoStatus,
+    valorDesconto,
     valorFinal,
     pagamentoStatus,
-    troco,
-    statusCompra,
+    saldoDevedor,
+    statusReserva,
     resumo
 } = require("../index")
 
 
-test("Deve armazenar corretamente os dados da compra", () => {
+test("Deve armazenar corretamente os dados", () => {
 
-    expect(cliente).toBe("Priscila Monteiro")
-    expect(produto).toBe("Notebook Ultrafino")
-    expect(preco).toBe(3200)
-    expect(quantidade).toBe(2)
-    expect(estoque).toBe(10)
-    expect(valorPago).toBe(6800)
-
-})
-
-
-test("Deve calcular o subtotal corretamente", () => {
-
-    expect(subtotal).toBe(6400)
+    expect(cliente).toBe("Bruno Alves")
+    expect(quadra).toBe("Quadra de Society")
+    expect(valorUnidade).toBe(60)
+    expect(periodo).toBe(2)
+    expect(quantidadeReservada).toBe(1)
+    expect(quadrasDisponiveis).toBe(3)
+    expect(valorPago).toBe(120)
 
 })
 
 
-test("Deve verificar corretamente a disponibilidade em estoque", () => {
+test("Deve calcular o valor base corretamente", () => {
 
-    expect(estoqueDisponivel).toBe("Estoque suficiente")
+    expect(valorBase).toBe(120)
 
 })
 
 
-test("Deve calcular corretamente a situação do frete", () => {
+test("Deve verificar corretamente quadras disponíveis no horário", () => {
 
-    expect(freteStatus).toBe("Frete grátis")
-    expect(valorFrete).toBe(0)
+    expect(disponibilidadeStatus).toBe("Quadras disponíveis")
+
+})
+
+
+test("Deve aplicar corretamente a regra do RF04", () => {
+
+    expect(descontoStatus).toBe("Sem desconto")
+    expect(valorDesconto).toBe(0)
 
 })
 
 
 test("Deve calcular o valor final corretamente", () => {
 
-    expect(valorFinal).toBe(6400)
+    expect(valorFinal).toBe(120)
 
 })
 
 
 test("Deve verificar corretamente a situação do pagamento", () => {
 
-    expect(pagamentoStatus).toBe("Pagamento aprovado")
+    expect(pagamentoStatus).toBe("Reserva quitada")
 
 })
 
 
-test("Deve calcular o troco corretamente", () => {
+test("Deve calcular saldo devedor corretamente", () => {
 
-    expect(troco).toBe(400)
-
-})
-
-
-test("Deve verificar corretamente a situação final da compra", () => {
-
-    expect(statusCompra).toBe("Compra confirmada")
+    expect(saldoDevedor).toBe(0)
 
 })
 
 
-test("Deve gerar um resumo contendo as informações da compra", () => {
+test("Deve verificar corretamente a situação final", () => {
 
-    expect(resumo).toContain("Priscila Monteiro")
-    expect(resumo).toContain("Notebook Ultrafino")
-    expect(resumo).toContain("3200")
-    expect(resumo).toContain("6400")
-    expect(resumo).toContain("Frete grátis")
-    expect(resumo).toContain("Pagamento aprovado")
-    expect(resumo).toContain("400")
-    expect(resumo).toContain("Compra confirmada")
+    expect(statusReserva).toBe("Reserva confirmada")
+
+})
+
+
+test("Deve gerar um resumo contendo as informações principais", () => {
+
+    expect(resumo).toContain("Bruno Alves")
+    expect(resumo).toContain("Quadra de Society")
+    expect(resumo).toContain("120")
+    expect(resumo).toContain("Sem desconto")
+    expect(resumo).toContain("Reserva quitada")
+    expect(resumo).toContain("Reserva confirmada")
 
 })

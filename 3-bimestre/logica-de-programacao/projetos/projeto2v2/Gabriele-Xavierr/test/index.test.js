@@ -1,14 +1,14 @@
 const {
-    cliente,
-    produto,
+    espectador,
+    peca,
     preco,
     quantidade,
-    estoque,
+    assentosDisponiveis,
     valorPago,
     subtotal,
-    estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    assentoStatus,
+    taxaStatus,
+    valorTaxa,
     valorFinal,
     pagamentoStatus,
     troco,
@@ -17,77 +17,76 @@ const {
 } = require("../index")
 
 
-test("Deve armazenar corretamente os dados da compra", () => {
+test("Deve armazenar corretamente os dados", () => {
 
-    expect(cliente).toBe("Bruno Azevedo")
-    expect(produto).toBe("Caixa de Som Bluetooth")
-    expect(preco).toBe(260)
-    expect(quantidade).toBe(2)
-    expect(estoque).toBe(12)
-    expect(valorPago).toBe(330)
-
-})
-
-
-test("Deve calcular o subtotal corretamente", () => {
-
-    expect(subtotal).toBe(520)
+    expect(espectador).toBe("Fernanda Melo")
+    expect(peca).toBe("Um Sonho de Verão")
+    expect(preco).toBe(20)
+    expect(quantidade).toBe(6)
+    expect(assentosDisponiveis).toBe(4)
+    expect(valorPago).toBe(150)
 
 })
 
 
-test("Deve verificar corretamente a disponibilidade em estoque", () => {
+test("Deve calcular subtotal corretamente", () => {
 
-    expect(estoqueDisponivel).toBe("Estoque suficiente")
-
-})
-
-
-test("Deve calcular corretamente a situação do frete", () => {
-
-    expect(freteStatus).toBe("Frete: R$ 30")
-    expect(valorFrete).toBe(30)
+    expect(subtotal).toBe(120)
 
 })
 
 
-test("Deve calcular o valor final corretamente", () => {
+test("Deve verificar corretamente assentos disponíveis", () => {
 
-    expect(valorFinal).toBe(550)
+    expect(assentoStatus).toBe("Assentos insuficientes")
+
+})
+
+
+test("Deve aplicar corretamente a regra comercial (RF04)", () => {
+
+    expect(taxaStatus).toBe("Sem taxa de conveniência")
+    expect(valorTaxa).toBe(0)
+
+})
+
+
+test("Deve calcular valor final corretamente", () => {
+
+    expect(valorFinal).toBe(120)
 
 })
 
 
 test("Deve verificar corretamente a situação do pagamento", () => {
 
-    expect(pagamentoStatus).toBe("Pagamento insuficiente")
+    expect(pagamentoStatus).toBe("Pagamento aprovado")
 
 })
 
 
-test("Deve calcular o troco corretamente", () => {
+test("Deve calcular troco corretamente", () => {
 
-    expect(troco).toBe(0)
-
-})
-
-
-test("Deve verificar corretamente a situação final da compra", () => {
-
-    expect(statusCompra).toBe("Compra não pode ser confirmada")
+    expect(troco).toBe(30)
 
 })
 
 
-test("Deve gerar um resumo contendo as informações da compra", () => {
+test("Deve verificar corretamente a situação final", () => {
 
-    expect(resumo).toContain("Bruno Azevedo")
-    expect(resumo).toContain("Caixa de Som Bluetooth")
-    expect(resumo).toContain("260")
-    expect(resumo).toContain("520")
-    expect(resumo).toContain("Frete: R$ 30")
-    expect(resumo).toContain("Pagamento insuficiente")
-    expect(resumo).toContain("0")
-    expect(resumo).toContain("Compra não pode ser confirmada")
+    expect(statusCompra).toBe("Compra não pode ser confirmada: assentos insuficientes")
+
+})
+
+
+test("Deve gerar um resumo contendo as informações principais", () => {
+
+    expect(resumo).toContain("Fernanda Melo")
+    expect(resumo).toContain("Um Sonho de Verão")
+    expect(resumo).toContain("120")
+    expect(resumo).toContain("Sem taxa de conveniência")
+    expect(resumo).toContain("Pagamento aprovado")
+    expect(resumo).toContain("30")
+    expect(resumo).toContain("Compra não pode ser confirmada: assentos insuficientes")
 
 })

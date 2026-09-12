@@ -1,93 +1,93 @@
 const {
     cliente,
-    produto,
-    preco,
-    quantidade,
-    estoque,
+    veiculo,
+    valorUnidade,
+    periodo,
+    quantidadeReservada,
+    motosDisponiveis,
     valorPago,
-    subtotal,
-    estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    valorBase,
+    disponibilidadeStatus,
+    descontoStatus,
+    valorDesconto,
     valorFinal,
     pagamentoStatus,
-    troco,
-    statusCompra,
+    saldoDevedor,
+    statusAluguel,
     resumo
 } = require("../index")
 
 
-test("Deve armazenar corretamente os dados da compra", () => {
+test("Deve armazenar corretamente os dados", () => {
 
-    expect(cliente).toBe("Marcelo Tavares")
-    expect(produto).toBe("Estabilizador")
-    expect(preco).toBe(180)
-    expect(quantidade).toBe(2)
-    expect(estoque).toBe(12)
-    expect(valorPago).toBe(230)
-
-})
-
-
-test("Deve calcular o subtotal corretamente", () => {
-
-    expect(subtotal).toBe(360)
+    expect(cliente).toBe("Natália Pires")
+    expect(veiculo).toBe("Moto Esportiva 300cc")
+    expect(valorUnidade).toBe(200)
+    expect(periodo).toBe(12)
+    expect(quantidadeReservada).toBe(2)
+    expect(motosDisponiveis).toBe(1)
+    expect(valorPago).toBe(1500)
 
 })
 
 
-test("Deve verificar corretamente a disponibilidade em estoque", () => {
+test("Deve calcular o valor base corretamente", () => {
 
-    expect(estoqueDisponivel).toBe("Estoque suficiente")
+    expect(valorBase).toBe(2400)
 
 })
 
 
-test("Deve calcular corretamente a situação do frete", () => {
+test("Deve verificar corretamente motos disponíveis", () => {
 
-    expect(freteStatus).toBe("Frete: R$ 30")
-    expect(valorFrete).toBe(30)
+    expect(disponibilidadeStatus).toBe("Motos indisponíveis")
+
+})
+
+
+test("Deve aplicar corretamente a regra do RF04", () => {
+
+    expect(descontoStatus).toBe("Desconto de aluguel longo aplicado")
+    expect(valorDesconto).toBe(120)
 
 })
 
 
 test("Deve calcular o valor final corretamente", () => {
 
-    expect(valorFinal).toBe(390)
+    expect(valorFinal).toBe(2280)
 
 })
 
 
 test("Deve verificar corretamente a situação do pagamento", () => {
 
-    expect(pagamentoStatus).toBe("Pagamento insuficiente")
+    expect(pagamentoStatus).toBe("Aluguel com saldo pendente")
 
 })
 
 
-test("Deve calcular o troco corretamente", () => {
+test("Deve calcular saldo devedor corretamente", () => {
 
-    expect(troco).toBe(0)
-
-})
-
-
-test("Deve verificar corretamente a situação final da compra", () => {
-
-    expect(statusCompra).toBe("Compra não pode ser confirmada")
+    expect(saldoDevedor).toBe(780)
 
 })
 
 
-test("Deve gerar um resumo contendo as informações da compra", () => {
+test("Deve verificar corretamente a situação final", () => {
 
-    expect(resumo).toContain("Marcelo Tavares")
-    expect(resumo).toContain("Estabilizador")
-    expect(resumo).toContain("180")
-    expect(resumo).toContain("360")
-    expect(resumo).toContain("Frete: R$ 30")
-    expect(resumo).toContain("Pagamento insuficiente")
-    expect(resumo).toContain("0")
-    expect(resumo).toContain("Compra não pode ser confirmada")
+    expect(statusAluguel).toBe("Aluguel não pode ser confirmado: motos indisponíveis")
+
+})
+
+
+test("Deve gerar um resumo contendo as informações principais", () => {
+
+    expect(resumo).toContain("Natália Pires")
+    expect(resumo).toContain("Moto Esportiva 300cc")
+    expect(resumo).toContain("2400")
+    expect(resumo).toContain("Desconto de aluguel longo aplicado")
+    expect(resumo).toContain("Aluguel com saldo pendente")
+    expect(resumo).toContain("Aluguel não pode ser confirmado: motos indisponíveis")
 
 })

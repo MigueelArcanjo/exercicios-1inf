@@ -1,59 +1,59 @@
 const {
-    cliente,
-    produto,
-    preco,
-    quantidade,
-    estoque,
+    motorista,
+    placa,
+    valorBase,
+    diasPermitidos,
+    diasUtilizados,
+    valorMultaPorDia,
     valorPago,
-    subtotal,
-    estoqueDisponivel,
-    freteStatus,
-    valorFrete,
+    prazoStatus,
+    diasAtraso,
+    multa,
     valorFinal,
     pagamentoStatus,
     troco,
-    statusCompra,
+    statusSaida,
     resumo
 } = require("../index")
 
 
-test("Deve armazenar corretamente os dados da compra", () => {
+test("Deve armazenar corretamente os dados", () => {
 
-    expect(cliente).toBe("Amanda Xavier")
-    expect(produto).toBe("Antena Wi-Fi USB")
-    expect(preco).toBe(65)
-    expect(quantidade).toBe(2)
-    expect(estoque).toBe(10)
-    expect(valorPago).toBe(530)
-
-})
-
-
-test("Deve calcular o subtotal corretamente", () => {
-
-    expect(subtotal).toBe(130)
+    expect(motorista).toBe("Fábio Nascimento")
+    expect(placa).toBe("ABC1D23")
+    expect(valorBase).toBe(20)
+    expect(diasPermitidos).toBe(2)
+    expect(diasUtilizados).toBe(1)
+    expect(valorMultaPorDia).toBe(10)
+    expect(valorPago).toBe(20)
 
 })
 
 
-test("Deve verificar corretamente a disponibilidade em estoque", () => {
+test("Deve verificar corretamente o prazo", () => {
 
-    expect(estoqueDisponivel).toBe("Estoque suficiente")
+    expect(prazoStatus).toBe("Dentro da tolerância")
 
 })
 
 
-test("Deve calcular corretamente a situação do frete", () => {
+test("Deve calcular os dias de atraso corretamente", () => {
 
-    expect(freteStatus).toBe("Frete: R$ 30")
-    expect(valorFrete).toBe(30)
+    expect(diasAtraso).toBe(0)
+
+})
+
+
+test("Deve calcular a multa corretamente", () => {
+
+    expect(multa).toBe(0)
 
 })
 
 
 test("Deve calcular o valor final corretamente", () => {
 
-    expect(valorFinal).toBe(160)
+    expect(valorFinal).toBe(20)
 
 })
 
@@ -65,29 +65,27 @@ test("Deve verificar corretamente a situação do pagamento", () => {
 })
 
 
-test("Deve calcular o troco corretamente", () => {
+test("Deve calcular troco corretamente", () => {
 
-    expect(troco).toBe(370)
-
-})
-
-
-test("Deve verificar corretamente a situação final da compra", () => {
-
-    expect(statusCompra).toBe("Compra confirmada")
+    expect(troco).toBe(0)
 
 })
 
 
-test("Deve gerar um resumo contendo as informações da compra", () => {
+test("Deve verificar corretamente a situação final", () => {
 
-    expect(resumo).toContain("Amanda Xavier")
-    expect(resumo).toContain("Antena Wi-Fi USB")
-    expect(resumo).toContain("65")
-    expect(resumo).toContain("130")
-    expect(resumo).toContain("Frete: R$ 30")
+    expect(statusSaida).toBe("Saída liberada")
+
+})
+
+
+test("Deve gerar um resumo contendo as informações principais", () => {
+
+    expect(resumo).toContain("Fábio Nascimento")
+    expect(resumo).toContain("ABC1D23")
+    expect(resumo).toContain("0")
+    expect(resumo).toContain("20")
     expect(resumo).toContain("Pagamento aprovado")
-    expect(resumo).toContain("370")
-    expect(resumo).toContain("Compra confirmada")
+    expect(resumo).toContain("Saída liberada")
 
 })
