@@ -60,3 +60,20 @@ Situação final: ${statusAula}
 `
 
 console.log(resumo)
+
+module.exports = {
+    nome,
+    idade,
+    categoria,
+    possuiMatricula,
+    inadimplente,
+    valorMensalidade,
+    valorPago,
+    idadeStatus,
+    nivelAcesso,
+    acessoStatus,
+    pagamentoStatus,
+    troco,
+    statusAula,
+    resumo
+}
